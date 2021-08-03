@@ -150,7 +150,10 @@ class App extends Component {
       <div>
         <Navbar account={this.state.account} />
         { this.state.loading
-          ? <div id="loader" className="text-center mt-5"><p>Loading...</p></div>
+          ? <div id="loader" className="text-center mt-5">
+            <p>Loading... Alexandria requires Metamask linked to RSK Testnet</p>
+            <p>Link <a href="https://developers.rsk.co/wallet/use/metamask/">here</a> to connect to RSK testnet</p>
+          </div>
           : <Main
             captureFile={this.captureFile}
             capturePostFile={this.capturePostFile}
