@@ -1,7 +1,8 @@
+// SPDX-License-Identifier: MIT
 pragma solidity >= 0.5.0 <0.9.0;
 
-contract Decentragram {
-  string public name = "Decentragram";
+contract BlackCoverBook {
+  string public name = "BlackCoverBook";
 
   // Store posts
   uint public postCount = 0;
@@ -48,10 +49,10 @@ contract Decentragram {
     postCount = postCount + 1;
 
     // Add post to contract
-    posts[postCount] = Post(postCount, _postHash,  _description, 0, msg.sender); //msg.sender = account sending the request
+    posts[postCount] = Post(postCount, _postHash,  _description, 0, payable(msg.sender)); //msg.sender = account sending the request
 
     // Trigger event
-    emit PostCreated(postCount, _postHash, _description, 0, msg.sender);
+    emit PostCreated(postCount, _postHash, _description, 0, payable(msg.sender));
   }
 
 
@@ -69,7 +70,6 @@ contract Decentragram {
 
     // Pay author by sending them ether
     _author.transfer(msg.value);
-    // THIS MAY BE WHERRE BUG IS, I CHANGED AT 1:02 of tutorial
 
     // Increment the tip amount
     _post.tipAmount = _post.tipAmount + msg.value;

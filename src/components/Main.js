@@ -60,12 +60,12 @@ class Main extends Component {
                               className="btn btn-link btn-sm float-right pt-0"
                               name={image.id}
                               onClick={(event) => {
-                                let tipAmount = window.web3.utils.toWei('0.1', 'Ether')
+                                let tipAmount = window.web3.utils.toWei('0.001', 'Ether')
                                 console.log(event.target.name, tipAmount)
                                 this.props.tipImageOwner(event.target.name, tipAmount)
                               }}
                             >
-                              TIP 0.1 ETH
+                              TIP 0.001 ETH
                             </button>
 
                         </li>
