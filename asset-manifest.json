@@ -8,8 +8,8 @@
   "runtime~main.js": "/blackcoverbook/static/js/runtime~main.7c766aae.js",
   "runtime~main.js.map": "/blackcoverbook/static/js/runtime~main.7c766aae.js.map",
   "static/media/photo.png": "/blackcoverbook/static/media/photo.d6cbd8e6.png",
-  "static/css/1.5b255aec.chunk.css.map": "/blackcoverbook/static/css/1.5b255aec.chunk.css.map",
   "static/css/main.a870eb77.chunk.css.map": "/blackcoverbook/static/css/main.a870eb77.chunk.css.map",
+  "static/css/1.5b255aec.chunk.css.map": "/blackcoverbook/static/css/1.5b255aec.chunk.css.map",
   "index.html": "/blackcoverbook/index.html",
   "precache-manifest.f2e38177b2263cc821fd708beaf2fcb9.js": "/blackcoverbook/precache-manifest.f2e38177b2263cc821fd708beaf2fcb9.js",
   "service-worker.js": "/blackcoverbook/service-worker.js"
