@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import Web3 from 'web3';
 import './App.css';
-// import BlackCoverBook from '../abis/BlackCoverBook.json' // BCB1
-import BlackCoverBook from '../abis/BlackCoverBook2.json' // BCB2
+// import Alexandria from '../abis/Alexandria.json' // BCB1
+// import Alexandria from '../abis/Alexandria.json' // BCB2
 
+import Alexandria from '../abis/Alexandria.json';
 import Navbar from './Navbar'
 import Main from './Main'
 const ipfsClient = require('ipfs-http-client')
@@ -39,32 +40,26 @@ class App extends Component {
 
     const networkId = await web3.eth.net.getId()
 
-    // const networkData = blackCoverBook.networks[networkId]  // change this to 1 if you want main net
+    // const networkData = Alexandria.networks[networkId]  // change this to 1 if you want main net
     const networkData = 31  // change this to 1 if you want main net
 
     if(networkData) {
-      // const blackCoverBook = web3.eth.Contract(blackCoverBook.abi, networkData.address) // original
-      // const contractAddress = "0x262D1E7A0829359D7a9c053A4D9eA91dF1864fE3"      // test 
-      // const contractAddress = "0xdDAFfD65b08DD2bD41762e4a9cC2D49Fa4b3C71c"   //blackbook   
-      const contractAddress = "0x1aA47235e66b8FaBe91888dCF3e43dCF58F41b7C"   //blackbook2   
-      // const contractAddress = "0x1aA47235e66b8FaBe91888dCF3e43dCF58F41b7C"   //from Remix
-      // const contractAddress = "0x1Aa47235e66b8FABe91888Dcf3E43dcf58F41B7C"   //from RSK explorer
-      
+
+      // const contractAddress = "0x1aA47235e66b8FaBe91888dCF3e43dCF58F41b7C"   //blackbook2   
+      const contractAddress = "0x292DF9d771537DeF350C4e8B9A2D0E5b210E1Bf5" // Alexandria
+      const alexandria = web3.eth.Contract(Alexandria, contractAddress)
 
       
 
-
-      const blackCoverBook = web3.eth.Contract(BlackCoverBook, contractAddress)
-      // blackCoverBook.options.address = contractAddress
-      this.setState({blackCoverBook: blackCoverBook})
-      const postCount = await blackCoverBook.methods.postCount().call()
-      console.log("Contract object: ", blackCoverBook)
+      this.setState({alexandria: alexandria})
+      const postCount = await alexandria.methods.postCount().call()
+      console.log("Contract object: ", alexandria)
       this.setState({postCount: postCount})
       
 
       // Load posts 
       for (var i=1; i <= postCount; i++) {
-        const post = await blackCoverBook.methods.posts(i).call()
+        const post = await alexandria.methods.posts(i).call()
         console.log("POST: ", post)
         this.setState({
           posts: [...this.state.posts, post]
@@ -78,7 +73,7 @@ class App extends Component {
 
       this.setState({loading: false})
     } else {
-      window.alert("blackCoverBook contract not deployed to selected network")
+      window.alert("Alexandria contract not deployed to selected network")
     }
   }
 
@@ -90,13 +85,26 @@ class App extends Component {
 
     reader.onloadend = () => {
       this.setState({buffer: Buffer(reader.result)})
-      console.log('buffer', this.state.buffer)
+      // console.log('buffer', this.state.buffer)
+    }
+  }
+
+  capturePostFile = event => {
+    event.preventDefault()
+    const file = event.target.files[0]
+    const reader = new window.FileReader()
+    reader.readAsArrayBuffer(file)
+
+    reader.onloadend = () => {
+      this.setState({postBuffer: Buffer(reader.result)})
+      console.log('PB buffer', this.state.postBuffer)
     }
   }
 
   uploadPost = description => {
-    console.log("Submitting file to IPFS")
-
+    console.log("Submitting files to IPFS")
+    
+    // Add Preview Image to IPFS
     ipfs.add(this.state.buffer, (error,result) => {
       console.log("IPFS result", result)
       if(error) {
@@ -104,16 +112,25 @@ class App extends Component {
         return
       }
 
+      // Add File to IPFS
+      ipfs.add(this.state.postBuffer, (error,postResult) => {
+        console.log("IPFS result", postResult)
+        if(error) {
+          console.error(error)
+          return
+      }
+
+
       this.setState({loading: true})
-      this.state.blackCoverBook.methods.uploadPost(result[0].hash, description).send({from: this.state.account}).on('transactionHash',(hash) => {
+      this.state.alexandria.methods.uploadPost(result[0].hash, description, postResult[0].hash).send({from: this.state.account}).on('transactionHash',(hash) => {
         this.setState({loading: false})
       })
-    }) 
+    })}) 
   }
 
-  tipImageOwner = (id, tipAmount) => {
+  tipPostAuthor = (id, tipAmount) => {
     this.setState({loading: true})
-    this.state.blackCoverBook.methods.tipImageOwner(id).send({from: this.state.account, value: tipAmount}).on('transactionHash', (hash) => {
+    this.state.alexandria.methods.tipPostAuthor(id).send({from: this.state.account, value: tipAmount}).on('transactionHash', (hash) => {
       this.setState({loading: false})
     })
   }
@@ -122,7 +139,7 @@ class App extends Component {
     super(props)
     this.state = {
       account: '',
-      blackCoverBook: null,
+      Alexandria: null,
       posts: [],
       loading: true
     }
@@ -136,9 +153,10 @@ class App extends Component {
           ? <div id="loader" className="text-center mt-5"><p>Loading...</p></div>
           : <Main
             captureFile={this.captureFile}
+            capturePostFile={this.capturePostFile}
             uploadPost={this.uploadPost}
             posts={this.state.posts}
-            tipImageOwner={this.tipImageOwner}
+            tipPostAuthor={this.tipPostAuthor}
             />
           }
       </div>
