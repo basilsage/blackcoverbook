@@ -1,11 +1,11 @@
 self.__precacheManifest = [
   {
-    "revision": "dc3b8777475ec112452e",
+    "revision": "2e6ffdec34ebe8901463",
     "url": "/blackcoverbook/static/css/main.a870eb77.chunk.css"
   },
   {
-    "revision": "dc3b8777475ec112452e",
-    "url": "/blackcoverbook/static/js/main.dc3b8777.chunk.js"
+    "revision": "2e6ffdec34ebe8901463",
+    "url": "/blackcoverbook/static/js/main.2e6ffdec.chunk.js"
   },
   {
     "revision": "6a999666a700a4acf780",
@@ -24,7 +24,7 @@ self.__precacheManifest = [
     "url": "/blackcoverbook/static/media/photo.d6cbd8e6.png"
   },
   {
-    "revision": "532cb6618ca1b24b8f9bd223e3183609",
+    "revision": "40eecfd2e8ba07ebc6089ab89777fa0e",
     "url": "/blackcoverbook/index.html"
   }
 ];

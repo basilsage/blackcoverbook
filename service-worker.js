@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/blackcoverbook/precache-manifest.f2e38177b2263cc821fd708beaf2fcb9.js"
+  "/blackcoverbook/precache-manifest.e41687533aff81848096dcf3c587cf88.js"
 );
 
 workbox.clientsClaim();
